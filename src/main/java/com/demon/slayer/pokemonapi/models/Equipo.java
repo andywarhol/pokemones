@@ -43,7 +43,6 @@ public class Equipo {
 	private List<Pokemon> pokemons =new ArrayList<>();
 	
 
-
 	public void setNombreEquipo(String nombre_equipo) {
 		this.nombreequipo=nombre_equipo;
 		
