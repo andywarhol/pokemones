@@ -1,6 +1,7 @@
 package com.demon.slayer.pokemonapi.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.demon.slayer.pokemonapi.exceptions.ArgumentException;
@@ -110,6 +111,13 @@ public class UsuarioService {
 		}
 		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 		logger.info("usuario: "+usuario);
+		
+		String userRole = usuario.getRol().toLowerCase();
+		String userRequestRole=datos.getUser().getRol().toLowerCase();
+		if(!userRequestRole.equals(userRole)) {
+			throw new ArgumentException("please send valid data, you cannot change the role");
+		}
+		
 		List<Pokemon> pokemons = new ArrayList<>();
 		usuario.setRol(datos.getUser().getRol());
 		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
