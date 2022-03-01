@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
+import com.demon.slayer.pokemonapi.exceptions.PasswordFormatException;
 import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
 import com.demon.slayer.pokemonapi.exceptions.TrainerAlreadyExistException;
 import com.demon.slayer.pokemonapi.exceptions.UserAlreadyExistException;
@@ -64,32 +65,40 @@ public class UsuarioService {
 
 	public ResponseCreate createUsuario(RequestRegister registro){
 		List<Tipo> type= tipoRepository.findAll();
-			if (type.isEmpty()) {
-				tipoService.agregarTipos();
-			}
+		if (type.isEmpty()) {
+			tipoService.agregarTipos();
+		}
+		
 		if(this.findByUsuario(registro.getUsuario().getUsuario())==null && registro.getUsuario().getUsuario().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-			if((!pokemonService.repetidos(registro.getPokemons()))){
+			
+			if(registro.getUsuario().getPassword().matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
 				
-				if(equipoService.obtenerEquipo(registro.getEquipo().
-						getNombre_equipo(), registro.getEquipo().getEntrenador())==null){
-								
-						for (RequestPokemon pokemon:registro.getPokemons()) {
-							pokemonService.createPokemon(pokemon, registro.getEquipo());
-						}
-					Usuario user = new Usuario();
-						
-					user.setUsuario(registro.getUsuario().getUsuario());
-					user.setRol(registro.getUsuario().getRol());
-					user.setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
-					user.setEquipo(equipoService.obtenerEquipo(registro.getEquipo()));
-					usuarioRepository.save(user);
-					return new ResponseCreate("Bien");
+				if((!pokemonService.repetidos(registro.getPokemons()))){
+					if(equipoService.obtenerEquipo(registro.getEquipo().
+							getNombre_equipo(), registro.getEquipo().getEntrenador())==null){
+									
+							for (RequestPokemon pokemon:registro.getPokemons()) {
+								pokemonService.createPokemon(pokemon, registro.getEquipo());
+							}
+					
+					}else
+						throw new TrainerAlreadyExistException();
+				} else {
+					throw new SamePokemonException();
+				}
 				
-				}else
-					throw new TrainerAlreadyExistException();
-			} else {
-				throw new SamePokemonException();
+				Usuario user = new Usuario();
+				
+				user.setUsuario(registro.getUsuario().getUsuario());
+				user.setRol(registro.getUsuario().getRol());
+				user.setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
+				user.setEquipo(equipoService.obtenerEquipo(registro.getEquipo()));
+				usuarioRepository.save(user);
+				return new ResponseCreate("Bien");
+			}else {
+				throw new PasswordFormatException();
 			}
+
 		}
 		else {
 			if (!registro.getUsuario().getUsuario().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
