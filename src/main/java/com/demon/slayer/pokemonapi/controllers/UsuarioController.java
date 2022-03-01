@@ -1,9 +1,12 @@
 package com.demon.slayer.pokemonapi.controllers;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
+import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
+import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestLoginUsuario;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
@@ -31,6 +34,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,19 +49,25 @@ public class UsuarioController {
     
     @Autowired
 	UsuarioService usuarioService;
+    
     @Autowired
-   PokemonService pokemonService;
+    PokemonService pokemonService;
+    
     @Autowired
     TipoService tipoService;
     
     @Autowired
-   EquipoService equipoService;
-   @Autowired
+    EquipoService equipoService;
+   
+    @Autowired
     private AuthenticationManager authenticationManager;
 
-   @Autowired
+    @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @Autowired
+    UsuarioRepository userRepo;
+    
     Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
      
     
@@ -66,13 +76,18 @@ public class UsuarioController {
         usuarioService.createUsuario(datos);
     }
         
-    @PostMapping("/update/{username}")
-    public void requestUpdateUsuario(@Valid @RequestBody RequestUpdateUsuario datos, @PathVariable String username) {
+    @PostMapping("/addNewPkm/{username}")
+    public String requestUpdateUsuario(@Valid @RequestBody RequestUpdateUsuario datos, @PathVariable String username) {
         logger.warn("datos: "+datos);
         logger.warn("username: "+username);
-    	usuarioService.requestUpdateUsuario(datos, username);
+    	return usuarioService.requestUpdateUsuario(datos, username);
     }
 
+    @DeleteMapping("delete/{username}")
+    public String borrarUsuario(@PathVariable String username) {
+    	userRepo.deleteById(username);
+    	return "User " + username + "Borrado con exito";
+    }
 
     @PostMapping("/login")
     public JWTAuthResponse login(@RequestBody RequestLoginUsuario usuario){
