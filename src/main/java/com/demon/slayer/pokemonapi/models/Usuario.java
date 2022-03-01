@@ -20,7 +20,7 @@ import lombok.*;
 public class Usuario {
 	
 	@Id
-	@Column(name="usuario",unique=true)
+	@Column(name="usuario",length=30, unique=true)
 	private String usuario;
 	
 	@Column(name="rol")

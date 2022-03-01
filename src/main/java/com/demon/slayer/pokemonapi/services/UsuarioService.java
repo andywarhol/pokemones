@@ -3,6 +3,7 @@ package com.demon.slayer.pokemonapi.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.demon.slayer.pokemonapi.exceptions.ArgumentException;
 import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
 import com.demon.slayer.pokemonapi.exceptions.TrainerAlreadyExistException;
 import com.demon.slayer.pokemonapi.exceptions.UserAlreadyExistException;
@@ -63,6 +64,10 @@ public class UsuarioService {
 
 	public ResponseCreate createUsuario(RequestRegister registro){
 		List<Tipo> type= tipoRepository.findAll();
+			
+			if(registro.getPokemons().size()<1) {
+				throw new ArgumentException("please send valid data, must be at least 1 pokemon");
+			}
 			if (type.isEmpty()) {
 				tipoService.agregarTipos();
 			}
@@ -100,6 +105,9 @@ public class UsuarioService {
 		logger.info("Se llamo la funcion Request update");
 		logger.info("Datos: "+datos);
 		logger.info("Username: "+username);
+		if(datos.getPokemonList().size()<1) {
+			throw new ArgumentException("please send valid data, must be at least 1 pokemon");
+		}
 		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 		logger.info("usuario: "+usuario);
 		List<Pokemon> pokemons = new ArrayList<>();

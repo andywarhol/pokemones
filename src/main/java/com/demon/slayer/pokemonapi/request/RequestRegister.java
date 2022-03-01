@@ -2,6 +2,8 @@ package com.demon.slayer.pokemonapi.request;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 
 
 
@@ -9,7 +11,10 @@ public class RequestRegister {
 	
 	private RequestEquipo equipo;
 	private RequestUsuario user;
+	
+	@NotNull
 	private List<RequestPokemon> pokemons;
+	
 	public RequestUsuario getUsuario() {
 		return user;
 	}
