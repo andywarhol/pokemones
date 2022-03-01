@@ -31,7 +31,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+bootJar{
+	archiveClassifier.set('boot')
+}
 
+jar{
+	archiveClassifier.set('')
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
