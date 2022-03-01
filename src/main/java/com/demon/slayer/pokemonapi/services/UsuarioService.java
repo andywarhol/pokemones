@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.demon.slayer.pokemonapi.exceptions.AdminUserPkmLimitException;
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
+import com.demon.slayer.pokemonapi.exceptions.NoPokemonNameException;
 import com.demon.slayer.pokemonapi.exceptions.PasswordFormatException;
 import com.demon.slayer.pokemonapi.exceptions.ProvisionalUserPkmLimitException;
 import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
@@ -18,6 +19,7 @@ import com.demon.slayer.pokemonapi.models.Usuario;
 import com.demon.slayer.pokemonapi.repositories.EquipoRepository;
 import com.demon.slayer.pokemonapi.repositories.PokemonRepository;
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
+import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
 import com.demon.slayer.pokemonapi.request.RequestPokemon;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
 import com.demon.slayer.pokemonapi.request.RequestUpdateUsuario;
@@ -140,38 +142,75 @@ public class UsuarioService {
 	public Usuario findByUsuario(String user) {
 		return usuarioRepository.findByUsuario(user).orElse(null);
 	}
+	
+	public String requestAddPkmUsuario(RequestAddNewPkmUsuario datos, String username) {
+		
+		if(datos.getRol().equalsIgnoreCase("Admin")) {
+			Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
+			List<Pokemon> pokemons = new ArrayList<>();
+			
+			if((!pokemonService.repetidos(datos.getPokemonList()))){
+				
+				if(datos.getPokemonList().size() + usuario.getEquipo().getPokemons().size()>10) {
+					throw new AdminUserPkmLimitException();
+				}
+				else {
+					usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+					datos.getPokemonList().forEach(p -> {
+						List<Tipo> tipos = new ArrayList<>();
+						logger.info("nombre pokemon: "+p.getName());
+						p.getTipos().forEach((t) -> {
+							logger.info("buscando tipo: "+t);
+							tipos.add(tipoService.findTipoByNombre(t));
+						});
+						Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
+						pokemon.setTipos(tipos);
+						pokemon.setNombre(p.getName());
+						pokemons.add(pokemon);
+						
+					});
+
+					usuario.getEquipo().setPokemons(pokemons);
+				
+					try{
+						usuarioRepository.save(usuario);
+					} catch(Exception e){
+						throw new UserNotFoundException();
+					}
+						return "Pokemons actualizados";
+					}
+				
+				}
+
+			
+			}else {
+				throw new SamePokemonException();
+			}
+			
+					
+		return "Rol provisional no puede actualizar pokemons";
+	}
 
 	public String requestUpdateUsuario(RequestUpdateUsuario datos, String username) {
-		logger.info("Se llamo la funcion Request update");
-		logger.info("Datos: "+datos);
-		logger.info("Username: "+username);
-		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
-		logger.info("usuario: "+usuario);
-		List<Pokemon> pokemons = new ArrayList<>();
-		//usuario.setRol(datos.getUser().getRol());
-		usuario.setPassword(datos.getUser().getPassword());
-		usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
-		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
-		usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
-		datos.getPokemonList().forEach(p -> {
-			List<Tipo> tipos = new ArrayList<>();
-			logger.info("nombre pokemon: "+p.getName());
-			p.getTipos().forEach((t) -> {
-				logger.info("buscando tipo: "+t);
-				tipos.add(tipoService.findTipoByNombre(t));
-			});
-			Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
-			pokemon.setTipos(tipos);
-			pokemon.setNombre(p.getName());
-			pokemons.add(pokemon);
-		});
-		usuario.getEquipo().setPokemons(pokemons);
-		try{
-			usuarioRepository.save(usuario);
-		} catch(Exception e){
-			throw new UserNotFoundException();
-		}
-		return "Usuario actualizado exitosamente";
+				
+			logger.info("Se llamo la funcion Request update");
+			logger.info("Datos: "+datos);
+			logger.info("Username: "+username);
+			Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
+			logger.info("usuario: "+usuario);
+			//List<Pokemon> pokemons = new ArrayList<>();
+			//usuario.setRol(datos.getUser().getRol());
+			usuario.setPassword(datos.getUser().getPassword());
+			usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
+			usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+			//usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
+			
+			try{
+				usuarioRepository.save(usuario);
+			} catch(Exception e){
+				throw new UserNotFoundException();
+			}
+			return "Usuario actualizado exitosamente";
     }
 	    
 	    

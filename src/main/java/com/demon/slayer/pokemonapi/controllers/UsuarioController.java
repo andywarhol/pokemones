@@ -7,6 +7,7 @@ import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
+import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestLoginUsuario;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,11 +78,18 @@ public class UsuarioController {
         usuarioService.createUsuario(datos);
     }
         
-    @PostMapping("/addNewPkm/{username}")
+    @PutMapping("/update/{username}")
     public String requestUpdateUsuario(@Valid @RequestBody RequestUpdateUsuario datos, @PathVariable String username) {
         logger.warn("datos: "+datos);
         logger.warn("username: "+username);
     	return usuarioService.requestUpdateUsuario(datos, username);
+    }
+    
+    @PostMapping("/addNewPkm/{username}")
+    public String requestAddPkmUsuario(@Valid @RequestBody RequestAddNewPkmUsuario datos, @PathVariable String username) {
+        logger.warn("datos: "+datos);
+        logger.warn("username: "+username);
+    	return usuarioService.requestAddPkmUsuario(datos, username);
     }
 
     @DeleteMapping("delete/{username}")
