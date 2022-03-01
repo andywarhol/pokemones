@@ -3,6 +3,7 @@ package com.demon.slayer.pokemonapi.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.demon.slayer.pokemonapi.exceptions.NoPokemonException;
 import com.demon.slayer.pokemonapi.exceptions.ResponseException;
 import com.demon.slayer.pokemonapi.models.Equipo;
 import com.demon.slayer.pokemonapi.models.Pokemon;
@@ -160,6 +161,9 @@ public class PokemonService {
 	public boolean repetidos(List<RequestPokemon>pokemons) {
 		List<Integer>repetidos=new ArrayList();
 		Integer numero=0 ;
+		if(pokemons == null || pokemons.isEmpty()) {
+			throw new NoPokemonException();
+		}
 		for (int i=0; i<pokemons.size();i++) {
 			repetidos.add(0);
 			for(int j=0; j<pokemons.size();j++) {
