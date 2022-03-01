@@ -79,7 +79,7 @@ public class UsuarioController {
      
     @GetMapping("/saludo")
 	public String saludo(){
-		return "Hola si funciona"
+		return "Hola si funciona";
 	}
     @PostMapping("/register")
     public void createUsuario(@Valid @RequestBody RequestRegister datos){
