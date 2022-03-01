@@ -45,7 +45,7 @@ public class Pokemon {
 	@JoinTable(
 		name="pokemon_tipo",
 				joinColumns=@JoinColumn(name="idpokemon"),
-				inverseJoinColumns= @JoinColumn(name="idTipo")
+				inverseJoinColumns= @JoinColumn(name="idTipo") 
 	)
 	private List<Tipo> tipos =new ArrayList<>();
 	

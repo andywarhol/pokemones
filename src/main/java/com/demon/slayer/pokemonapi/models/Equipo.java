@@ -2,6 +2,7 @@ package com.demon.slayer.pokemonapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,10 +37,10 @@ public class Equipo {
 	@Column(name="nombreEquipo")
 	private String nombreequipo;
 	
-	@OneToOne(mappedBy = "equipo")
+	@OneToOne(mappedBy = "equipo", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	private Usuario usuario;
 	
-	@ManyToMany(mappedBy = "equipos")
+	@ManyToMany(mappedBy = "equipos",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Pokemon> pokemons =new ArrayList<>();
 	
 

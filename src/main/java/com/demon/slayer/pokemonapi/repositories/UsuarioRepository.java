@@ -17,7 +17,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
 	@Query("From Usuario where usuario=:usuario ")
 	Optional<Usuario> findByUsuario(@Param("usuario") String usuario);
-	    
-	}
+	 
+
+	
+	
+}
 
 

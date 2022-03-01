@@ -1,7 +1,9 @@
 package com.demon.slayer.pokemonapi.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -27,7 +29,7 @@ public class Usuario {
 	@Column(name="pass")
 	private String password;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name = "team_id")
 	private Equipo equipo;
 

@@ -1,10 +1,14 @@
 package com.demon.slayer.pokemonapi.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
 import com.demon.slayer.pokemonapi.models.Usuario;
+import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestLoginUsuario;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
@@ -36,6 +40,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +60,9 @@ public class UsuarioController {
    PokemonService pokemonService;
     @Autowired
     TipoService tipoService;
+    
+    @Autowired
+    UsuarioRepository userRepo;
     
     @Autowired
    EquipoService equipoService;
@@ -117,6 +125,7 @@ public class UsuarioController {
         return usuarioService.buscarUsuario(username);
     }
     
+
 	@GetMapping("/verify-token")
 	public ResponseEntity<ResponseDTO<ResponseUsuario>> getUserByToken(@RequestHeader(name = "Authorization") String token) {
 		String user =  tokenProvider.getUsernameFromJWT(token.substring(6, token.length()));
@@ -124,6 +133,25 @@ public class UsuarioController {
 		ResponseDTO<ResponseUsuario> response = new ResponseDTO<ResponseUsuario>("the user by the token is", userDto);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+    @GetMapping("get_all")
+    public List<ResponseUsuario> getAll() {
+    	List<Usuario> usuarios = userRepo.findAll();
+    	List<ResponseUsuario> responseUser = new ArrayList<ResponseUsuario>();
+    	
+    	usuarios.stream().forEach(user -> {
+    		responseUser.add(new ResponseUsuario(user));
+    	});
+    	return responseUser;
+    }
+    
+    @DeleteMapping("delete/{username}")
+    public String borrarUsuario(@PathVariable String username) {
+    	userRepo.deleteById(username);
+    	return "User " + username + "Borrado con exito";
+    }
+
+
 	
     
 }
