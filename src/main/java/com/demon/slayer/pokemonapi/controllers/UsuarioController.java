@@ -77,7 +77,10 @@ public class UsuarioController {
 
     Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
      
-    
+    @GetMapping("/saludo")
+	public String saludo(){
+		return "Hola si funciona"
+	}
     @PostMapping("/register")
     public void createUsuario(@Valid @RequestBody RequestRegister datos){
         usuarioService.createUsuario(datos);
