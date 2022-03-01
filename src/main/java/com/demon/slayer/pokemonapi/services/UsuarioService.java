@@ -3,8 +3,10 @@ package com.demon.slayer.pokemonapi.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.demon.slayer.pokemonapi.exceptions.AdminUserPkmLimitException;
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
 import com.demon.slayer.pokemonapi.exceptions.PasswordFormatException;
+import com.demon.slayer.pokemonapi.exceptions.ProvisionalUserPkmLimitException;
 import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
 import com.demon.slayer.pokemonapi.exceptions.TrainerAlreadyExistException;
 import com.demon.slayer.pokemonapi.exceptions.UserAlreadyExistException;
@@ -64,6 +66,19 @@ public class UsuarioService {
 	
 
 	public ResponseCreate createUsuario(RequestRegister registro){
+		
+		if(registro.getUsuario().getRol().equals("Provisional") || registro.getUsuario().getRol().equals("provisional") ) {
+			if(registro.getPokemons().size()>5) {
+				throw new ProvisionalUserPkmLimitException();
+			}
+		}
+		
+		if(registro.getUsuario().getRol().equals("Admin") || registro.getUsuario().getRol().equals("admin") ) {
+			if(registro.getPokemons().size()>10) {
+				throw new AdminUserPkmLimitException();
+			}
+		}
+		
 		List<Tipo> type= tipoRepository.findAll();
 		if (type.isEmpty()) {
 			tipoService.agregarTipos();
@@ -79,7 +94,11 @@ public class UsuarioService {
 									
 							for (RequestPokemon pokemon:registro.getPokemons()) {
 								pokemonService.createPokemon(pokemon, registro.getEquipo());
-							}
+								
+								
+						}
+							
+							
 					
 					}else
 						throw new TrainerAlreadyExistException();
@@ -87,12 +106,18 @@ public class UsuarioService {
 					throw new SamePokemonException();
 				}
 				
+				
+				
 				Usuario user = new Usuario();
 				
 				user.setUsuario(registro.getUsuario().getUsuario());
 				user.setRol(registro.getUsuario().getRol());
+				
+				
 				user.setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
 				user.setEquipo(equipoService.obtenerEquipo(registro.getEquipo()));
+				
+				
 				usuarioRepository.save(user);
 				return new ResponseCreate("Bien");
 			}else {

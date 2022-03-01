@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.demon.slayer.pokemonapi.exceptions.NoPokemonException;
+import com.demon.slayer.pokemonapi.exceptions.NoPokemonNameException;
 import com.demon.slayer.pokemonapi.exceptions.ResponseException;
 import com.demon.slayer.pokemonapi.models.Equipo;
 import com.demon.slayer.pokemonapi.models.Pokemon;
@@ -51,6 +52,9 @@ public class PokemonService {
 		   return pokemon;
 		   
 	   }else {
+		   		if(req.getName()==null || req.getName().isBlank()) {
+		   			throw new NoPokemonNameException();
+		   		}
 			   pokemon.setNombre(req.getName());
 			   pokemon.setStatus(1);
 			   try {
