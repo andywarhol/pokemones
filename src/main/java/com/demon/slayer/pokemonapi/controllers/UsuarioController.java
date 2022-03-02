@@ -1,17 +1,25 @@
 package com.demon.slayer.pokemonapi.controllers;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
+import com.demon.slayer.pokemonapi.exceptions.UserNotFoundException;
+import com.demon.slayer.pokemonapi.models.Pokemon;
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
 import com.demon.slayer.pokemonapi.models.Usuario;
+
+import com.demon.slayer.pokemonapi.repositories.EquipoRepository;
+import com.demon.slayer.pokemonapi.repositories.PokemonRepository;
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
+import com.demon.slayer.pokemonapi.request.RequestDeletePkm;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestLoginUsuario;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
@@ -82,6 +90,9 @@ public class UsuarioController {
     @Autowired
     UsuarioRepository userRepo;
     
+    @Autowired
+    PokemonRepository pokemonRepo;
+    
     Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
      
     @GetMapping("/saludo")
@@ -108,11 +119,21 @@ public class UsuarioController {
     }
 
     @DeleteMapping("delete/{username}")
-    public String borrarUsuario(@PathVariable String username) {
+    public ResponseDTO<String> borrarUsuario(@PathVariable String username) {
     	userRepo.deleteById(username);
-    	return "User " + username + "Borrado con exito";
+    	String message = "User " + username + "Borrado con exito";
+    	ResponseDTO<String> response = new ResponseDTO<String>("deleted",message);
+    	return response;
     }
 
+    @DeleteMapping("deletePkm/{username}")
+    public ResponseDTO<String> deletePkm(@Valid @RequestBody RequestDeletePkm datos, @PathVariable String username) {
+        logger.warn("datos: "+datos);
+        logger.warn("username: "+username);
+        ResponseDTO<String> response = new ResponseDTO<String>("deleted",usuarioService.pkmDelete(datos, username));
+    	return response;
+    }
+    
     @PostMapping("/login")
     public JWTAuthResponse login(@RequestBody RequestLoginUsuario usuario){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
