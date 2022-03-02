@@ -221,64 +221,28 @@ public class UsuarioService {
 		logger.info("Se llamo la funcion Request update");
 		logger.info("Datos: "+datos);
 		logger.info("Username: "+username);
-		
-		if(datos.getPokemonList().size()<1) {
-			throw new ArgumentException("please send valid data, must be at least 1 pokemon");
-		}
 		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 		logger.info("usuario: "+usuario);
-		
+		//List<Pokemon> pokemons = new ArrayList<>();
+		//usuario.setRol(datos.getUser().getRol());
 		String userRole = usuario.getRol().toLowerCase();
 		String userRequestRole=datos.getUser().getRol().toLowerCase();
 		if(!userRequestRole.equals(userRole)) {
 			throw new ArgumentException("please send valid data, you cannot change the role");
 		}
 		
-		List<Pokemon> pokemons = new ArrayList<>();
-		//usuario.setRol(datos.getUser().getRol());
 		usuario.setPassword(datos.getUser().getPassword());
 		usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
 		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
-		usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
-		datos.getPokemonList().forEach(p -> {
-			List<Tipo> tipos = new ArrayList<>();
-			logger.info("nombre pokemon: "+p.getName());
-			p.getTipos().forEach((t) -> {
-				logger.info("buscando tipo: "+t);
-				tipos.add(tipoService.findTipoByNombre(t));
-			});
-			Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
-			pokemon.setTipos(tipos);
-			pokemon.setNombre(p.getName());
-			pokemons.add(pokemon);
-		});
-		usuario.getEquipo().setPokemons(pokemons);
+		//usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
+		
 		try{
 			usuarioRepository.save(usuario);
 		} catch(Exception e){
 			throw new UserNotFoundException();
 		}
 		return "Usuario actualizado exitosamente";
-/*			
-			logger.info("Se llamo la funcion Request update");
-			logger.info("Datos: "+datos);
-			logger.info("Username: "+username);
-			Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
-			logger.info("usuario: "+usuario);
-			//List<Pokemon> pokemons = new ArrayList<>();
-			//usuario.setRol(datos.getUser().getRol());
-			usuario.setPassword(datos.getUser().getPassword());
-			usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
-			usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
-			//usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
-			
-			try{
-				usuarioRepository.save(usuario);
-			} catch(Exception e){
-				throw new UserNotFoundException();
-			}
-			return "Usuario actualizado exitosamente";
-*/
+	
     }
 	    
 	

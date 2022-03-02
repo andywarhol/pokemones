@@ -56,7 +56,7 @@ public class PokemonService {
 		   return pokemon;
 		   
 	   }else {
-		   		if(req.getName()==null || req.getName().isBlank()) {
+		   		if(req.getName()==null || req.getName().isEmpty()) {
 		   			throw new NoPokemonNameException();
 		   		}
 			   pokemon.setNombre(req.getName());

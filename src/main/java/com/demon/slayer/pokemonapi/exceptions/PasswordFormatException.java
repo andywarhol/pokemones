@@ -8,9 +8,9 @@ import lombok.Getter;
 public class PasswordFormatException extends ResponseException{
 
     public PasswordFormatException(){
-        super("Formato de contraseña incorrecta");
+        super("Formato de contrasena incorrecta");
         this.status = HttpStatus.UNAUTHORIZED;
         this.name = PasswordFormatException.class.getName();
-        this.description = "La contraseña debe contar con mayúsculas, minúsculas, números y al menos 1 caracter especial, sin espacios, mínimo 8 caracteres";
+        this.description = "La contrasena debe contar con mayúsculas, minúsculas, números y al menos 1 caracter especial, sin espacios, mínimo 8 caracteres";
     }
 }
