@@ -17,10 +17,16 @@ public class RequestUpdateUsuario {
 	
 	private RequestEquipo equipo;
 	
+	@JsonProperty("pokemons")
+	private List<RequestPokemon> pokemonList;
+	
     public RequestUsuario getUser() {
         return user;
     }
 	public RequestEquipo getEquipo() {
 		return equipo;
 	}
+	public List<RequestPokemon>  getPokemonList() {
+        return pokemonList;
+    }
 }

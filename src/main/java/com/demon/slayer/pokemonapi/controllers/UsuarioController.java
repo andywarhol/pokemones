@@ -9,10 +9,7 @@ import javax.validation.constraints.Email;
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
-<<<<<<< HEAD
 import com.demon.slayer.pokemonapi.models.Usuario;
-=======
->>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
@@ -71,17 +68,9 @@ public class UsuarioController {
     TipoService tipoService;
     
     @Autowired
-<<<<<<< HEAD
-    UsuarioRepository userRepo;
-    
-    @Autowired
-   EquipoService equipoService;
-   @Autowired
-=======
     EquipoService equipoService;
    
     @Autowired
->>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -177,15 +166,5 @@ public class UsuarioController {
     	});
     	return responseUser;
     }
-    
-    @DeleteMapping("delete/{username}")
-    public String borrarUsuario(@PathVariable String username) {
-    	userRepo.deleteById(username);
-    	return "User " + username + "Borrado con exito";
-    }
-
-
-	
-    
 }
 

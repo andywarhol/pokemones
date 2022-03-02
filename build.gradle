@@ -35,13 +35,6 @@ bootJar{
 	archiveClassifier.set('boot')
 }
 
-<<<<<<< HEAD
-=======
-bootJar{
-	archiveClassifier.set('boot')
-}
-
->>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 jar{
 	archiveClassifier.set('')
 }
