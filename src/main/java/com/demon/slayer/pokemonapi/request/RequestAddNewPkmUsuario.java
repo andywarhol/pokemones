@@ -11,16 +11,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class RequestUpdateUsuario {
+public class RequestAddNewPkmUsuario {
 	
-	private RequestUsuario user;
-	
+	private String usuario;
+	private String rol; 
 	private RequestEquipo equipo;
 	
-    public RequestUsuario getUser() {
-        return user;
+	@JsonProperty("pokemons")
+	private List<RequestPokemon> pokemonList;
+    
+    public List<RequestPokemon>  getPokemonList() {
+        return pokemonList;
     }
-	public RequestEquipo getEquipo() {
-		return equipo;
-	}
+
 }
