@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2022-02-28 10:23:19.889  INFO 15828 --- [main] c.d.s.pokemonapi.PokemonApiApplication   : Starting PokemonApiApplication using Java 17.0.1 on e-amespinoza with PID 15828 (C:\Cursos\Spring\Sprint 2 - Proyecto\pokemones\bin\main started by e-amespinoza in C:\Cursos\Spring\Sprint 2 - Proyecto\pokemones)
 2022-02-28 10:23:19.892  INFO 15828 --- [main] c.d.s.pokemonapi.PokemonApiApplication   : No active profile set, falling back to default profiles: default
 2022-02-28 10:23:20.455  INFO 15828 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -264,6 +265,23 @@ java.lang.NullPointerException: Cannot invoke "com.demon.slayer.pokemonapi.model
 2022-02-28 10:52:34.177  INFO 13168 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
 2022-02-28 10:52:34.246  INFO 13168 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
 2022-02-28 10:52:35.751 ERROR 13168 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+=======
+2022-02-28 11:35:38.434  INFO 6128 --- [main] c.d.s.pokemonapi.PokemonApiApplication   : Starting PokemonApiApplication using Java 17.0.1 on PABLOESCOBEDO with PID 6128 (C:\Users\pablo.escobedo\Documents\workspace-spring-tool-suite-4-4.13.1.RELEASE\pokemones\bin\main started by pablo.escobedo in C:\Users\pablo.escobedo\Documents\workspace-spring-tool-suite-4-4.13.1.RELEASE\pokemones)
+2022-02-28 11:35:38.439  INFO 6128 --- [main] c.d.s.pokemonapi.PokemonApiApplication   : No active profile set, falling back to default profiles: default
+2022-02-28 11:35:39.144  INFO 6128 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-02-28 11:35:39.206  INFO 6128 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 4 JPA repository interfaces.
+2022-02-28 11:35:39.792  INFO 6128 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-02-28 11:35:39.804  INFO 6128 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-02-28 11:35:39.804  INFO 6128 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-02-28 11:35:39.934  INFO 6128 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-02-28 11:35:39.935  INFO 6128 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1435 ms
+2022-02-28 11:35:40.003  WARN 6128 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-02-28 11:35:40.122  INFO 6128 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-02-28 11:35:40.178  INFO 6128 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.4.Final
+2022-02-28 11:35:40.443  INFO 6128 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-02-28 11:35:40.547  INFO 6128 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-02-28 11:35:42.462 ERROR 6128 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 
 org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgiiibaujuh"
 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674) ~[postgresql-42.3.1.jar:42.3.1]
@@ -434,7 +452,11 @@ org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgii
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.6.3.jar:2.6.3]
 	at com.demon.slayer.pokemonapi.PokemonApiApplication.main(PokemonApiApplication.java:10) ~[main/:na]
 
+<<<<<<< HEAD
 2022-02-28 10:52:35.754  WARN 13168 --- [main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+=======
+2022-02-28 11:35:42.469  WARN 6128 --- [main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 
 org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgiiibaujuh"
 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674) ~[postgresql-42.3.1.jar:42.3.1]
@@ -605,9 +627,15 @@ org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgii
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.6.3.jar:2.6.3]
 	at com.demon.slayer.pokemonapi.PokemonApiApplication.main(PokemonApiApplication.java:10) ~[main/:na]
 
+<<<<<<< HEAD
 2022-02-28 10:52:35.763  INFO 13168 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL81Dialect
 2022-02-28 10:52:36.251  INFO 13168 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
 2022-02-28 10:52:37.582 ERROR 13168 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+=======
+2022-02-28 11:35:42.485  INFO 6128 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL81Dialect
+2022-02-28 11:35:43.224  INFO 6128 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-02-28 11:35:44.758 ERROR 6128 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 
 org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgiiibaujuh"
 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674) ~[postgresql-42.3.1.jar:42.3.1]
@@ -777,6 +805,7 @@ org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgii
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.6.3.jar:2.6.3]
 	at com.demon.slayer.pokemonapi.PokemonApiApplication.main(PokemonApiApplication.java:10) ~[main/:na]
 
+<<<<<<< HEAD
 2022-02-28 10:52:37.586  WARN 13168 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 53300
 2022-02-28 10:52:37.586 ERROR 13168 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : FATAL: too many connections for role "mjypgiiibaujuh"
 2022-02-28 10:52:37.593 ERROR 13168 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution
@@ -2998,6 +3027,18 @@ org.postgresql.util.PSQLException: FATAL: too many connections for role "mjypgii
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
 2022-02-28 10:56:29.252 ERROR 10440 --- [main] o.s.boot.SpringApplication               : Application run failed
+=======
+2022-02-28 11:35:44.765  WARN 6128 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 53300
+2022-02-28 11:35:44.765 ERROR 6128 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : FATAL: too many connections for role "mjypgiiibaujuh"
+2022-02-28 11:35:44.775 ERROR 6128 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution
+2022-02-28 11:35:44.778 ERROR 6128 --- [main] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'securityConfig': Unsatisfied dependency expressed through method 'setContentNegotationStrategy' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openEntityManagerInViewInterceptorConfigurer' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration$JpaWebConfiguration.class]: Unsatisfied dependency expressed through method 'openEntityManagerInViewInterceptorConfigurer' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'openEntityManagerInViewInterceptor' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration$JpaWebConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution
+2022-02-28 11:35:44.814  INFO 6128 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-02-28 11:35:44.820  WARN 6128 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+2022-02-28 11:35:44.834  INFO 6128 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-02-28 11:35:44.891 ERROR 6128 --- [main] o.s.boot.SpringApplication               : Application run failed
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 
 org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:163) ~[spring-boot-2.6.3.jar:2.6.3]

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.demon.slayer.pokemonapi.exceptions.ArgumentException;
+=======
+import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
 import com.demon.slayer.pokemonapi.exceptions.TrainerAlreadyExistException;
 import com.demon.slayer.pokemonapi.exceptions.UserAlreadyExistException;
@@ -72,32 +76,42 @@ public class UsuarioService {
 			if (type.isEmpty()) {
 				tipoService.agregarTipos();
 			}
-		if(this.findByUsuario(registro.getUsuario().getUsuario())==null) {
+		if(this.findByUsuario(registro.getUsuario().getUsuario())==null && registro.getUsuario().getUsuario().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			if((!pokemonService.repetidos(registro.getPokemons()))){
+				
 				if(equipoService.obtenerEquipo(registro.getEquipo().
-				getNombre_equipo(), registro.getEquipo().getEntrenador())==null){
+						getNombre_equipo(), registro.getEquipo().getEntrenador())==null){
+								
+						for (RequestPokemon pokemon:registro.getPokemons()) {
+							pokemonService.createPokemon(pokemon, registro.getEquipo());
+						}
+					Usuario user = new Usuario();
 						
-				for (RequestPokemon pokemon:registro.getPokemons()) {
-					pokemonService.createPokemon(pokemon, registro.getEquipo());
-				}
-				Usuario user = new Usuario();
-				user.setUsuario(registro.getUsuario().getUsuario());
-				user.setRol(registro.getUsuario().getRol());
-				user.setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
-				user.setEquipo(equipoService.obtenerEquipo(registro.getEquipo()));
-				usuarioRepository.save(user);
-				return new ResponseCreate("Bien");
-			}else
-			throw new TrainerAlreadyExistException();
-		} else{
-			throw new SamePokemonException();
+					user.setUsuario(registro.getUsuario().getUsuario());
+					user.setRol(registro.getUsuario().getRol());
+					user.setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
+					user.setEquipo(equipoService.obtenerEquipo(registro.getEquipo()));
+					usuarioRepository.save(user);
+					return new ResponseCreate("Bien");
+				
+				}else
+					throw new TrainerAlreadyExistException();
+			} else {
+				throw new SamePokemonException();
+			}
 		}
-		}
-		else
-			throw new UserAlreadyExistException();
+		else {
+			if (!registro.getUsuario().getUsuario().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+				throw new EmailFormatException();
+			} else {
+
+				throw new UserAlreadyExistException();
+			}
 			
+		}
 			
 	}
+	
 	public Usuario findByUsuario(String user) {
 		return usuarioRepository.findByUsuario(user).orElse(null);
 	}
@@ -119,7 +133,9 @@ public class UsuarioService {
 		}
 		
 		List<Pokemon> pokemons = new ArrayList<>();
-		usuario.setRol(datos.getUser().getRol());
+		//usuario.setRol(datos.getUser().getRol());
+		usuario.setPassword(datos.getUser().getPassword());
+		usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
 		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
 		usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
 		datos.getPokemonList().forEach(p -> {

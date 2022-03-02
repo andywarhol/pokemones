@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+import javax.validation.constraints.Email;
 
 import lombok.*;
 
@@ -20,7 +20,12 @@ import lombok.*;
 public class Usuario {
 	
 	@Id
+<<<<<<< HEAD
 	@Column(name="usuario",length=30, unique=true)
+=======
+	@Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+	@Column(name="usuario",unique=true)
+>>>>>>> 7cda5d35de1de460664df86f3ad5d123cf9fb682
 	private String usuario;
 	
 	@Column(name="rol")
