@@ -6,11 +6,14 @@ import java.util.List;
 import com.demon.slayer.pokemonapi.exceptions.NoPokemonException;
 import com.demon.slayer.pokemonapi.exceptions.NoPokemonNameException;
 import com.demon.slayer.pokemonapi.exceptions.ResponseException;
+import com.demon.slayer.pokemonapi.exceptions.SamePokemonException;
 import com.demon.slayer.pokemonapi.models.Equipo;
 import com.demon.slayer.pokemonapi.models.Pokemon;
 import com.demon.slayer.pokemonapi.models.Tipo;
+import com.demon.slayer.pokemonapi.models.Usuario;
 import com.demon.slayer.pokemonapi.repositories.PokemonRepository;
 import com.demon.slayer.pokemonapi.repositories.TipoRepository;
+import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestPokemon;
 import com.demon.slayer.pokemonapi.response.PokemonsResponse;
@@ -26,7 +29,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PokemonService {
 	
-
+    @Autowired
+    UsuarioRepository userRepo;
 	
 	@Autowired 
 	PokemonRepository pokemonRepository;
@@ -161,7 +165,7 @@ public class PokemonService {
 		pokemon.getEquipos().remove(equipo);
 		pokemonRepository.save(pokemon);
 	}
-
+	
 	public boolean repetidos(List<RequestPokemon>pokemons) {
 		List<Integer>repetidos=new ArrayList();
 		Integer numero=0 ;
@@ -182,6 +186,25 @@ public class PokemonService {
 				return true;
 			return false;
 	}
+	
+	public boolean repetidosUsuario(List<Pokemon>pokemons, List<RequestPokemon> req) {
+		if(pokemons == null || pokemons.isEmpty()) {
+			throw new NoPokemonException();
+		}
+		
+		for (int i=0; i<req.size();i++) {			
+			for(int j=0; j<pokemons.size();j++) {
+				if(req.get(i).getName().equals(pokemons.get(j).getNombre())) {
+					throw new SamePokemonException(); 
+				}
+			}
+		}
+		
+		return false; 
 
+	}
+
+	
+	
 }
 

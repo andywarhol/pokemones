@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface PokemonRepository extends JpaRepository<Pokemon, Long>{
-	
-
+	 
 	@Query("From Pokemon where nombre=:nombre")
 	List<Pokemon> findByNombre(@Param("nombre") String nombre);
 	
 	@Query("From Pokemon where idpokemon=:idpokemon")
 	Pokemon findById(@Param("idpokemon") long idpokemon);
+	
 }

@@ -1,13 +1,23 @@
 package com.demon.slayer.pokemonapi.controllers;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
+import com.demon.slayer.pokemonapi.exceptions.UserNotFoundException;
+import com.demon.slayer.pokemonapi.models.Pokemon;
 import com.demon.slayer.pokemonapi.models.Testing;
 import com.demon.slayer.pokemonapi.models.Tipo;
+import com.demon.slayer.pokemonapi.models.Usuario;
+import com.demon.slayer.pokemonapi.repositories.EquipoRepository;
+import com.demon.slayer.pokemonapi.repositories.PokemonRepository;
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
+import com.demon.slayer.pokemonapi.request.RequestDeletePkm;
 import com.demon.slayer.pokemonapi.request.RequestEquipo;
 import com.demon.slayer.pokemonapi.request.RequestLoginUsuario;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
@@ -70,6 +80,9 @@ public class UsuarioController {
     @Autowired
     UsuarioRepository userRepo;
     
+    @Autowired
+    PokemonRepository pokemonRepo;
+    
     Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
      
     
@@ -98,6 +111,13 @@ public class UsuarioController {
     	return "User " + username + "Borrado con exito";
     }
 
+    @DeleteMapping("deletePkm/{username}")
+    public String deletePkm(@Valid @RequestBody RequestDeletePkm datos, @PathVariable String username) {
+        logger.warn("datos: "+datos);
+        logger.warn("username: "+username);
+    	return usuarioService.pkmDelete(datos, username);
+    }
+    
     @PostMapping("/login")
     public JWTAuthResponse login(@RequestBody RequestLoginUsuario usuario){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

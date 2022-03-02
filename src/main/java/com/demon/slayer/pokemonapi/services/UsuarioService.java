@@ -20,6 +20,7 @@ import com.demon.slayer.pokemonapi.repositories.EquipoRepository;
 import com.demon.slayer.pokemonapi.repositories.PokemonRepository;
 import com.demon.slayer.pokemonapi.repositories.UsuarioRepository;
 import com.demon.slayer.pokemonapi.request.RequestAddNewPkmUsuario;
+import com.demon.slayer.pokemonapi.request.RequestDeletePkm;
 import com.demon.slayer.pokemonapi.request.RequestPokemon;
 import com.demon.slayer.pokemonapi.request.RequestRegister;
 import com.demon.slayer.pokemonapi.request.RequestUpdateUsuario;
@@ -66,6 +67,9 @@ public class UsuarioService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired 
+	PokemonRepository pokemonRepository;
+	
 
 	public ResponseCreate createUsuario(RequestRegister registro){
 		
@@ -88,7 +92,7 @@ public class UsuarioService {
 		
 		if(this.findByUsuario(registro.getUsuario().getUsuario())==null && registro.getUsuario().getUsuario().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			
-			if(registro.getUsuario().getPassword().matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
+			if(registro.getUsuario().getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@$!%*?&_-])[A-Za-z\\d#$@$!%*?&_-]{8,}$")) {
 				
 				if((!pokemonService.repetidos(registro.getPokemons()))){
 					if(equipoService.obtenerEquipo(registro.getEquipo().
@@ -150,45 +154,56 @@ public class UsuarioService {
 			List<Pokemon> pokemons = new ArrayList<>();
 			
 			if((!pokemonService.repetidos(datos.getPokemonList()))){
-				
 				if(datos.getPokemonList().size() + usuario.getEquipo().getPokemons().size()>10) {
 					throw new AdminUserPkmLimitException();
 				}
-				else {
-					usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
-					datos.getPokemonList().forEach(p -> {
-						List<Tipo> tipos = new ArrayList<>();
-						logger.info("nombre pokemon: "+p.getName());
-						p.getTipos().forEach((t) -> {
-							logger.info("buscando tipo: "+t);
-							tipos.add(tipoService.findTipoByNombre(t));
-						});
-						Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
-						pokemon.setTipos(tipos);
-						pokemon.setNombre(p.getName());
-						pokemons.add(pokemon);
+				else {					
+						List<Pokemon> pkmUsuario = usuario.getEquipo().getPokemons();
 						
-					});
+						if(!pokemonService.repetidosUsuario(pkmUsuario, datos.getPokemonList())) {
+							usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+							datos.getPokemonList().forEach(p -> {
+								List<Tipo> tipos = new ArrayList<>();						
+								logger.info("nombre pokemon: "+p.getName());
+								p.getTipos().forEach((t) -> {
+									logger.info("buscando tipo: "+t);
+									tipos.add(tipoService.findTipoByNombre(t));
+								});
+								
+								Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
+								pokemon.setTipos(tipos);
+								pokemon.setNombre(p.getName());
+								pokemons.add(pokemon);
+								
+							});
 
-					usuario.getEquipo().setPokemons(pokemons);
-				
-					try{
-						usuarioRepository.save(usuario);
-					} catch(Exception e){
-						throw new UserNotFoundException();
+							usuario.getEquipo().setPokemons(pokemons);
+						
+							try{
+								usuarioRepository.save(usuario);
+							} catch(Exception e){
+								throw new UserNotFoundException();
+							}
+								return "Pokemons actualizados";
+								
+						}
+					
+	
 					}
-						return "Pokemons actualizados";
-					}
 				
-				}
-
+				} 
 			
 			}else {
 				throw new SamePokemonException();
 			}
 			
 					
-		return "Rol provisional no puede actualizar pokemons";
+		if(datos.getRol().equalsIgnoreCase("Provisional")) {
+			return "Rol provisional no puede actualizar pokemons";
+		} else {
+			return "En la lista hay pokemons repetidos";
+		}
+		
 	}
 
 	public String requestUpdateUsuario(RequestUpdateUsuario datos, String username) {
@@ -213,6 +228,41 @@ public class UsuarioService {
 			return "Usuario actualizado exitosamente";
     }
 	    
+	
+	public String pkmDelete(RequestDeletePkm datos, String username) {
+		
+		/*if(datos.getPokemonList().size()<1) {
+			throw new ArgumentException("please send valid data, must be at least 1 pokemon");
+		}*/
+		
+		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
+		logger.info("usuario: "+usuario);
+		
+		List<Pokemon> pokemons = new ArrayList<>();
+		
+		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+		usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
+		datos.getPokemonList().forEach(p -> {
+			List<Tipo> tipos = new ArrayList<>();
+			logger.info("nombre pokemon: "+p.getName());
+			p.getTipos().forEach((t) -> {
+				logger.info("buscando tipo: "+t);
+				tipos.add(tipoService.findTipoByNombre(t));
+			});
+			Pokemon pokemon = pokemonService.createPokemon(p, datos.getEquipo());
+			pokemon.setTipos(tipos);
+			pokemon.setNombre(p.getName());
+			pokemons.add(pokemon);
+		});
+		usuario.getEquipo().setPokemons(pokemons);
+		try{
+			usuarioRepository.save(usuario);
+		} catch(Exception e){
+			throw new UserNotFoundException();
+		}
+		
+		return "Pokemon deleted"; 
+	}
 	    
 	public PokemonsResponse pokemonesUsuario(String name) {
 		Usuario user =usuarioRepository.findByUsuario(name).orElseThrow(() -> new UserNotFoundException());
