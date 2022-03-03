@@ -221,19 +221,44 @@ public class UsuarioService {
 		logger.info("Se llamo la funcion Request update");
 		logger.info("Datos: "+datos);
 		logger.info("Username: "+username);
+		
+		
+		
 		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 		logger.info("usuario: "+usuario);
 		//List<Pokemon> pokemons = new ArrayList<>();
 		//usuario.setRol(datos.getUser().getRol());
+		
+	
 		String userRole = usuario.getRol().toLowerCase();
+		if(datos.getUser().getRol() != null && ! datos.getUser().getRol().isEmpty()) {
 		String userRequestRole=datos.getUser().getRol().toLowerCase();
 		if(!userRequestRole.equals(userRole)) {
 			throw new ArgumentException("please send valid data, you cannot change the role");
 		}
+		}
 		
-		usuario.setPassword(datos.getUser().getPassword());
-		usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
-		usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+		if(datos.getUser().getPassword() != null &&
+				! datos.getUser().getPassword().isEmpty())
+			
+		{
+			if(datos.getUser().getPassword()
+					.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@$!%*?&_-])[A-Za-z\\d#$@$!%*?&_-]{8,}$")){
+				usuario.setPassword(datos.getUser().getPassword());
+				usuario.setPassword(passwordEncoder.encode(datos.getUser().getPassword()));
+			} else {
+				throw new ArgumentException("Please make sure your new password matches the pattern: min 8 characters, at least 1 uppercase, at least a number and a special character!");
+			}
+		}
+			
+		
+	
+		if(datos.getEquipo() != null) {
+			//if(! datos.getEquipo().getEntrenador().isEmpty() || ! datos.getEquipo().getNombre_equipo().isEmpty()) {
+				usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
+		//	}
+		}
+		
 		//usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
 		
 		try{

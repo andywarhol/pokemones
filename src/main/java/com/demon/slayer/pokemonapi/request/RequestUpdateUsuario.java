@@ -24,6 +24,8 @@ public class RequestUpdateUsuario {
     public RequestUsuario getUser() {
         return user;
     }
+    
+    
 	public RequestEquipo getEquipo() {
 		return equipo;
 	}

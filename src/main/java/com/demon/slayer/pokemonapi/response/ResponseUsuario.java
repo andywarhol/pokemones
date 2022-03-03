@@ -13,9 +13,11 @@ public class ResponseUsuario {
     private String rol;
     private ResponseEquipo equipo;
 
+
     public ResponseUsuario(Usuario usuario){
         this.usuario = usuario.getUsuario();
         this.rol = usuario.getRol();
         this.equipo = new ResponseEquipo(usuario.getEquipo());
+      
     }
 }

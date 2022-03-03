@@ -38,9 +38,20 @@ public class EquipoService {
 	}
 
 	public Equipo updateEquipo(Equipo equipoOld, RequestEquipo equipoNew){
-		equipoOld.setNombreEquipo(equipoNew.getNombre_equipo());
-		equipoOld.setEntrenador(equipoNew.getEntrenador());
+		if(equipoNew.getEntrenador() != null && 
+				! equipoNew.getEntrenador().isEmpty()) {
+			equipoOld.setEntrenador(equipoNew.getEntrenador());
+		}
+		
+		if(equipoNew.getNombre_equipo() != null && 
+				!equipoNew.getNombre_equipo().isEmpty()) {
+			equipoOld.setNombreEquipo(equipoNew.getNombre_equipo());
+		}
+		
+	
 		return equipoRepository.save(equipoOld);
 	}
+	
+
 	
 }
