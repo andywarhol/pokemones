@@ -100,22 +100,23 @@ public class UsuarioController {
 		return "Hola si funciona";
 	}
     @PostMapping("/register")
-    public void createUsuario(@Valid @RequestBody RequestRegister datos){
+    public ResponseDTO<String> createUsuario(@Valid @RequestBody RequestRegister datos){
         usuarioService.createUsuario(datos);
+        return new ResponseDTO<String>("success","the user was created");
     }
         
     @PutMapping("/update/{username}")
-    public String requestUpdateUsuario(@Valid @RequestBody RequestUpdateUsuario datos, @PathVariable String username) {
+    public ResponseDTO<String> requestUpdateUsuario(@Valid @RequestBody RequestUpdateUsuario datos, @PathVariable String username) {
         logger.warn("datos: "+datos);
         logger.warn("username: "+username);
-    	return usuarioService.requestUpdateUsuario(datos, username);
+        return new ResponseDTO<String>("user updated successfully", usuarioService.requestUpdateUsuario(datos, username));
     }
     
     @PostMapping("/addNewPkm/{username}")
-    public String requestAddPkmUsuario(@Valid @RequestBody RequestAddNewPkmUsuario datos, @PathVariable String username) {
+    public ResponseDTO<String> requestAddPkmUsuario(@Valid @RequestBody RequestAddNewPkmUsuario datos, @PathVariable String username) {
         logger.warn("datos: "+datos);
         logger.warn("username: "+username);
-    	return usuarioService.requestAddPkmUsuario(datos, username);
+    	return new ResponseDTO<String>("pokemon added succesfully",usuarioService.requestAddPkmUsuario(datos, username));
     }
 
     @DeleteMapping("delete/{username}")

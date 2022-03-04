@@ -221,25 +221,21 @@ public class UsuarioService {
 		logger.info("Se llamo la funcion Request update");
 		logger.info("Datos: "+datos);
 		logger.info("Username: "+username);
-		
-		
-		
 		Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 		logger.info("usuario: "+usuario);
 		//List<Pokemon> pokemons = new ArrayList<>();
 		//usuario.setRol(datos.getUser().getRol());
-		
-	
 		String userRole = usuario.getRol().toLowerCase();
-		if(datos.getUser().getRol() != null && ! datos.getUser().getRol().isEmpty()) {
 		String userRequestRole=datos.getUser().getRol().toLowerCase();
-		if(!userRequestRole.equals(userRole)) {
-			throw new ArgumentException("please send valid data, you cannot change the role");
-		}
+		if(datos.getUser().getRol() != null && ! datos.getUser().getRol().isEmpty()) {
+			if(!userRequestRole.equals(userRole)) {
+				throw new ArgumentException("please send valid data, you cannot change the role");
+			}
 		}
 		
-		if(datos.getUser().getPassword() != null &&
-				! datos.getUser().getPassword().isEmpty())
+		String pass = datos.getUser().getPassword().trim();
+		if((datos.getUser().getPassword() != null &&
+				!datos.getUser().getPassword().isEmpty()) && !(pass.equals("")))
 			
 		{
 			if(datos.getUser().getPassword()
@@ -249,14 +245,21 @@ public class UsuarioService {
 			} else {
 				throw new ArgumentException("Please make sure your new password matches the pattern: min 8 characters, at least 1 uppercase, at least a number and a special character!");
 			}
+		}else {
+			throw new ArgumentException("Please make sure your new password matches the pattern: min 8 characters, at least 1 uppercase, at least a number and a special character!");
 		}
-			
 		
-	
-		if(datos.getEquipo() != null) {
+		String trainer=datos.getEquipo().getEntrenador().trim();
+		String team=datos.getEquipo().getNombre_equipo().trim();
+		if(trainer.equals("") && team.equals("")) {
+			throw new ArgumentException("Wrong! fields cannot be empty");
+		}
+		if(datos.getEquipo() != null ) {
 			//if(! datos.getEquipo().getEntrenador().isEmpty() || ! datos.getEquipo().getNombre_equipo().isEmpty()) {
 				usuario.setEquipo(equipoService.updateEquipo(usuario.getEquipo(), datos.getEquipo()));
 		//	}
+		}else {
+			throw new ArgumentException("Wrong! fields cannot be empty");
 		}
 		
 		//usuario.getEquipo().getPokemons().forEach(p -> pokemonService.deleteEquipoPokemon(p, usuario.getEquipo()));
