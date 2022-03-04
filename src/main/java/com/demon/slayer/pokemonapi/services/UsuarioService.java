@@ -160,6 +160,7 @@ public class UsuarioService {
 	
 	public String requestAddPkmUsuario(RequestAddNewPkmUsuario datos, String username) {
 		
+
 		if(datos.getRol().equalsIgnoreCase("Admin")) {
 			Usuario usuario = usuarioRepository.findByUsuario(username).orElseThrow(() -> new UserNotFoundException());
 			List<Pokemon> pokemons = new ArrayList<>();
@@ -213,8 +214,7 @@ public class UsuarioService {
 			return "Rol provisional no puede actualizar pokemons";
 		} else {
 			return "En la lista hay pokemons repetidos";
-		}
-		
+		}		
 	}
 
 	public String requestUpdateUsuario(RequestUpdateUsuario datos, String username) {
@@ -270,7 +270,7 @@ public class UsuarioService {
 			throw new UserNotFoundException();
 		}
 		return "Usuario actualizado exitosamente";
-	
+		
     }
 	    
 	

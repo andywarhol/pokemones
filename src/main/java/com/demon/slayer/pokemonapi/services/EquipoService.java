@@ -52,6 +52,4 @@ public class EquipoService {
 		return equipoRepository.save(equipoOld);
 	}
 	
-
-	
 }

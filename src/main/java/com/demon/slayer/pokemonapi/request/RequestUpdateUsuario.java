@@ -16,7 +16,6 @@ public class RequestUpdateUsuario {
 	private RequestUsuario user;
 	
 	private RequestEquipo equipo;
-	
 	/*
 	@JsonProperty("pokemons")
 	private List<RequestPokemon> pokemonList;
@@ -24,8 +23,6 @@ public class RequestUpdateUsuario {
     public RequestUsuario getUser() {
         return user;
     }
-    
-    
 	public RequestEquipo getEquipo() {
 		return equipo;
 	}

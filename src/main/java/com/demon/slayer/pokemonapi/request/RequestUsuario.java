@@ -14,9 +14,9 @@ public class RequestUsuario {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	//public String getRol() {
-		//return rol;
-	//}
+	public String getRol() {
+		return rol;
+	}
 	public void setRol(String rol) {
 		this.rol = rol;
 	}

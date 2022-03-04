@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
+import com.demon.slayer.pokemonapi.exceptions.ArgumentException;
 import com.demon.slayer.pokemonapi.exceptions.EmailFormatException;
 import com.demon.slayer.pokemonapi.exceptions.UserNotFoundException;
 import com.demon.slayer.pokemonapi.models.Pokemon;
@@ -137,6 +138,9 @@ public class UsuarioController {
     
     @PostMapping("/login")
     public JWTAuthResponse login(@RequestBody RequestLoginUsuario usuario){
+    	if(usuario.getUsuario().isEmpty() || usuario.getPassword().isEmpty()) {
+    		throw new ArgumentException("Wrong data, cannot be empty");
+    	}
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             usuario.getUsuario(), usuario.getPassword()));
         
